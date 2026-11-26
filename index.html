@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="og:title" content="Fysiek seksueel geweld in Amsterdam, 2026">
+<meta property="og:description" content="Ongeveer 46.400 Amsterdammers van 16+ maakten in de afgelopen 12 maanden fysiek seksueel geweld mee. Interactieve grafieken naar geslacht en leeftijd.">
+<meta name="twitter:card" content="summary">
+<title>Fysiek seksueel geweld Amsterdam 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap">
+<style>
+/* Layout: één smalle kolom zoals een rapportkaart; kerncijfer bovenaan, daarna twee intervalgrafieken, dan conclusies */
+:root{
+  --bg:#f6f7f9; --card:#ffffff; --fg:#1d2430; --muted:#5b6575; --line:#dde1e8;
+  --accent:#2b5fae; --band:#b9cbe8; --warn-bg:#fff6e0; --warn-fg:#6b4b00;
+  --display:"Source Serif 4",Georgia,serif; --body:"Source Sans 3",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161d; --card:#1a2029; --fg:#e7ebf1; --muted:#9aa4b3; --line:#2d3542;
+  --accent:#7fa6e6; --band:#33476a; --warn-bg:#2e2712; --warn-fg:#f0d58c; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161d; --card:#1a2029; --fg:#e7ebf1; --muted:#9aa4b3; --line:#2d3542;
+  --accent:#7fa6e6; --band:#33476a; --warn-bg:#2e2712; --warn-fg:#f0d58c; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.55}
+.wrap{max-width:760px;margin:0 auto;padding-block:32px 48px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;flex-direction:column;gap:24px}
+h1,h2{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.2}
+h1{font-size:1.9rem} h2{font-size:1.3rem}
+.eyebrow{font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+p{margin:0;max-width:65ch}
+.muted{color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.hero{display:flex;flex-wrap:wrap;gap:20px 40px;align-items:flex-end}
+.big{font-family:var(--display);font-size:3rem;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.big small{font-family:var(--body);font-size:1rem;font-weight:400;color:var(--muted);display:block;margin-top:6px}
+.toggle{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;align-self:flex-start}
+.toggle button{font:inherit;font-size:.95rem;padding:6px 14px;border:0;background:transparent;color:var(--fg);cursor:pointer}
+.toggle button[aria-pressed="true"]{background:var(--accent);color:var(--card);font-weight:600}
+.toggle button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.chart{overflow-x:auto}
+svg text{fill:var(--fg);font-family:var(--body)}
+svg .tick{fill:var(--muted);font-size:13px}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:.9rem;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw-dot{width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.sw-band{width:22px;height:6px;border-radius:3px;background:var(--band)}
+ul{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:8px;max-width:65ch}
+.note{background:var(--warn-bg);color:var(--warn-fg);border-radius:8px;padding:12px 14px;font-size:.95rem}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;font-size:.95rem}
+th,td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--muted);font-weight:600}
+#tip{position:fixed;pointer-events:none;background:var(--fg);color:var(--bg);padding:6px 10px;border-radius:6px;font-size:.9rem;line-height:1.35}
+details summary{cursor:pointer;font-weight:600}
+</style>
+<style>body{margin:0}</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header style="display:flex;flex-direction:column;gap:8px">
+    <div class="eyebrow">Analysekaart · Amsterdam · 2026</div>
+    <h1>Fysiek seksueel geweld in de afgelopen 12 maanden</h1>
+    <p class="muted">Inwoners van Amsterdam van 16 jaar of ouder. Percentages uit de CBS-tabel, omgerekend naar aantallen met het aantal inwoners op 1 januari 2026.</p>
+  </header>
+
+  <section class="card">
+    <div class="hero">
+      <div class="big">5,7%<small>van alle Amsterdammers van 16+</small></div>
+      <div class="big">± 46.400<small>mensen (tussen 34.200 en 61.900)</small></div>
+    </div>
+    <p>Dat is ongeveer <strong>1 op de 18</strong> Amsterdammers van 16 jaar of ouder.</p>
+  </section>
+
+  <div class="toggle" role="group" aria-label="Weergave">
+    <button id="btn-aantal" aria-pressed="true">Aantallen</button>
+    <button id="btn-pct" aria-pressed="false">Percentages</button>
+  </div>
+
+  <section class="card">
+    <h2>Naar geslacht</h2>
+    <div class="chart" id="c-geslacht"></div>
+  </section>
+
+  <section class="card">
+    <h2>Naar leeftijd</h2>
+    <div class="chart" id="c-leeftijd"></div>
+    <div class="legend"><span><i class="sw-dot"></i>Beste schatting</span><span><i class="sw-band"></i>Onder- tot bovengrens</span></div>
+  </section>
+
+  <section class="card">
+    <h2>Wat zie je?</h2>
+    <ul>
+      <li><strong>Jongeren lopen het meeste risico.</strong> Van de 16- tot 30-jarigen maakte 12,9% het mee, ongeveer 28.700 mensen. Dat is meer dan alle andere leeftijdsgroepen samen.</li>
+      <li><strong>Het risico daalt sterk met de leeftijd.</strong> Bij 65-plussers gaat het om 0,9%, ongeveer 1.200 mensen.</li>
+      <li><strong>Vrouwen worden ongeveer twee keer zo vaak slachtoffer als mannen</strong> (7,4% tegen 3,8%). In aantallen: ongeveer 30.600 vrouwen en 15.200 mannen.</li>
+      <li><strong>Ook bij mannen gaat het om een grote groep.</strong> Met ruim 15.000 mannen is dit geen klein probleem.</li>
+    </ul>
+  </section>
+
+  <section class="note">
+    <strong>Let op bij het lezen.</strong> Dit zijn schattingen uit een enquête. Het echte aantal ligt waarschijnlijk tussen de onder- en bovengrens. Als twee balkjes elkaar overlappen (zoals bij vrouwen en mannen), is het verschil minder zeker. Bij 16–30 jaar tegenover 45 jaar en ouder overlappen ze niet: dat verschil is duidelijk. De groepen tellen niet precies op tot het totaal, omdat het CBS elk percentage apart schat en ik op honderdtallen heb afgerond.
+  </section>
+
+  <section class="card">
+    <details>
+      <summary>Alle cijfers in een tabel</summary>
+      <div class="chart" style="margin-top:10px">
+        <table id="tbl"></table>
+      </div>
+    </details>
+    <p class="muted" style="font-size:.9rem">Bronnen: CBS, Tabel 2 Slachtofferschap seksueel grensoverschrijdend gedrag 2026 (percentages). CBS StatLine tabel 03759ned, bevolking op 1 januari 2026, gemeente Amsterdam (inwoners). Aantallen zelf berekend en afgerond op honderdtallen.</p>
+  </section>
+</div>
+<div id="tip" hidden></div>
+
+<script>
+const DATA = {
+  geslacht: [
+    {g:"Vrouw", pct:[7.4,5.3,10.4], inw:413040},
+    {g:"Man",   pct:[3.8,2.2,6.6],  inw:401212},
+  ],
+  leeftijd: [
+    {g:"16 tot 30 jaar",   pct:[12.9,8.5,19],  inw:222447},
+    {g:"30 tot 45 jaar",   pct:[5.6,3.2,9.5],  inw:243697},
+    {g:"45 tot 65 jaar",   pct:[3.3,1.6,6.4],  inw:214164},
+    {g:"65 jaar of ouder", pct:[0.9,0.2,3.8],  inw:133944},
+  ]
+};
+const TOTAAL = {g:"Totaal 16+", pct:[5.7,4.2,7.6], inw:814252};
+const aantal = (p,inw)=>Math.round(p/100*inw/100)*100;
+const nl = n=>n.toLocaleString("nl-NL");
+const pctTxt = p=>p.toLocaleString("nl-NL",{minimumFractionDigits:1})+"%";
+let mode = "aantal";
+const tip = document.getElementById("tip");
+const NS = "http://www.w3.org/2000/svg";
+function el(t,a,txt){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(txt!=null)e.textContent=txt;return e;}
+
+function vals(r){return mode==="aantal" ? r.pct.map(p=>aantal(p,r.inw)) : r.pct;}
+function fmt(v){return mode==="aantal" ? nl(v) : pctTxt(v);}
+
+function niceMax(m){const steps=mode==="aantal"?[10000,20000,30000,40000,50000]:[5,10,15,20,25];for(const s of steps)if(s>=m)return s;return Math.ceil(m/10000)*10000;}
+
+function draw(id, rows){
+  const box=document.getElementById(id); box.innerHTML="";
+  const W=680, labW=130, padR=70, rowH=46, top=10, axisH=28;
+  const H=top+rows.length*rowH+axisH;
+  const all=[...DATA.geslacht,...DATA.leeftijd].map(r=>vals(r)[2]);
+  const max=niceMax(Math.max(...all));
+  const x=v=>labW+(v/max)*(W-labW-padR);
+  const svg=el("svg",{viewBox:`0 0 ${W} ${H}`,width:"100%",role:"img","aria-label":"Grafiek "+id.replace("c-","")});
+  svg.style.minWidth="460px";
+  const nT=5;
+  for(let i=0;i<=nT;i++){const v=max/nT*i, xx=x(v);
+    svg.append(el("line",{x1:xx,x2:xx,y1:top,y2:H-axisH,stroke:"var(--line)","stroke-width":1}));
+    svg.append(el("text",{x:xx,y:H-8,"text-anchor":"middle",class:"tick"},mode==="aantal"?nl(v):v+"%"));}
+  rows.forEach((r,i)=>{
+    const [w,lo,hi]=vals(r); const cy=top+i*rowH+rowH/2;
+    svg.append(el("text",{x:0,y:cy+5,"font-size":15},r.g));
+    svg.append(el("rect",{x:x(lo),y:cy-4,width:Math.max(2,x(hi)-x(lo)),height:8,rx:4,fill:"var(--band)"}));
+    svg.append(el("circle",{cx:x(w),cy,r:7,fill:"var(--accent)",stroke:"var(--card)","stroke-width":2}));
+    svg.append(el("text",{x:x(hi)+8,y:cy+5,"font-size":14,"font-weight":600},fmt(w)));
+    const hit=el("rect",{x:0,y:cy-rowH/2,width:W,height:rowH,fill:"transparent"});
+    hit.addEventListener("mousemove",e=>{
+      const a=r.pct.map(p=>aantal(p,r.inw));
+      tip.innerHTML=`<strong>${r.g}</strong><br>${pctTxt(r.pct[0])} · ± ${nl(a[0])} mensen<br>tussen ${nl(a[1])} en ${nl(a[2])}<br>van ${nl(r.inw)} inwoners`;
+      tip.hidden=false; tip.style.left=Math.min(e.clientX+14,innerWidth-230)+"px"; tip.style.top=(e.clientY+14)+"px";});
+    hit.addEventListener("mouseleave",()=>tip.hidden=true);
+    svg.append(hit);
+  });
+  box.append(svg);
+}
+
+function table(){
+  const rows=[TOTAAL,...DATA.geslacht,...DATA.leeftijd];
+  let h="<tr><th>Groep</th><th>%</th><th>Ondergrens</th><th>Bovengrens</th><th>Aantal</th><th>Ondergrens</th><th>Bovengrens</th><th>Inwoners 16+</th></tr>";
+  for(const r of rows){const a=r.pct.map(p=>aantal(p,r.inw));
+    h+=`<tr><td>${r.g}</td>${r.pct.map(p=>`<td>${pctTxt(p)}</td>`).join("")}${a.map(v=>`<td>${nl(v)}</td>`).join("")}<td>${nl(r.inw)}</td></tr>`;}
+  document.getElementById("tbl").innerHTML=h;
+}
+
+function render(){draw("c-geslacht",DATA.geslacht);draw("c-leeftijd",DATA.leeftijd);}
+for(const [id,m] of [["btn-aantal","aantal"],["btn-pct","pct"]]){
+  document.getElementById(id).addEventListener("click",()=>{mode=m;
+    document.getElementById("btn-aantal").setAttribute("aria-pressed",m==="aantal");
+    document.getElementById("btn-pct").setAttribute("aria-pressed",m==="pct");render();});
+}
+render(); table();
+</script>
+</body>
+</html>
